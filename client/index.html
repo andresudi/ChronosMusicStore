@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- swal -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <style>
+        body {
+            background-color: black;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <navbar @show-cd="getShowCd" @show-merch="getShowMerch" @show-all="getShowAll" @all-items="getItemToSearch"></navbar>
+        <br>
+        <carousel></carousel>
+        <sale-bonus></sale-bonus>
+        <item-show :itemshow="ItemToShow"></item-show>
+        <item-cd v-if="showCd"></item-cd>
+        <item-merch v-if="showMerch"></item-merch>
+  
+  
+        <!-- Login Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="container">
+                        <div class="modal-body">
+                            <div class="">
+                                <div class="card card-signin my-5">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Login</h5>
+                                        <form class="form-signin">
+                                            <div class="form-label-group">
+                                                <input v-model="email" type="email" class="form-control" placeholder="Email address" required>
+                                                <hr>
+                                            </div>
+                                            <div class="form-label-group">
+                                                <input v-model="password" type="password" class="form-control" placeholder="Password" required>
+                                                <hr>
+                                                <div class="custom-control custom-checkbox mb-3">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                    <label class="custom-control-label" for="customCheck1">Remember password</label>
+                                                </div>
+                                                <button class="btn btn-lg btn-primary btn-block text-uppercase" @click="login" type="button">Sign in</button>
+                                                <hr class="my-4">
+                                                <p style="text-align: center">Don't Have an Account?
+                                                    <a href="./register.html" style="color: brown;">Register here</a>
+                                                </p>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <carousel-video></carousel-video>
+        <footer-cp></footer-cp>
+
+    </div>
+    <script src="./Components/ItemToShow.js"></script>
+    <script src="./Components/ItemMerchComponent.js"></script>
+    <script src="./Components/ItemComponent.js"></script>
+    <script src="./Components/Navbar.js"></script>
+    <script src="./Components/DiscountBanner.js"></script>
+    <script src="./Components/CarouselImage.js"></script>
+    <script src="./Components/CarouselVideo.js"></script>
+    <script src="./Components/Footer.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                isLogin: false,
+                cart: [],
+                email: '',
+                password: '',
+                showCd: true,
+                showMerch: true,
+                ItemToShow: []
+            },
+            created() {
+                if (localStorage.getItem('token')) {
+                    this.isLogin = true
+                } else {
+                    this.isLogin = false
+                }
+            },
+            methods: {
+                getShowCd(value) {
+                    this.showCd = value
+                    this.showMerch = true
+                },
+                getShowMerch(value) {
+                    this.showMerch = value
+                    this.showCd = true
+                },  
+
+                getShowAll() {
+                    this.showMerch = true
+                    this.showCd = true
+                },
+
+                getItemToSearch(value) {
+                    this.ItemToShow = value
+                    this.showMerch = false
+                    this.showCd = false
+                    console.log(this.ItemToShow);
+                },
+
+                addToCart(item) {
+                    this.cart.push(item)
+                },
+
+                login() {
+                    event.preventDefault()
+                    const data = {
+                        email: this.email,
+                        password: this.password
+                    }
+
+                    axios.post('http://localhost:3000/user/login', {
+                        email: this.email,
+                        password: this.password
+                    })
+                        .then((response) => {
+                            console.log(response)
+                            localStorage.setItem('token', response.data.token)
+                            swal({
+                                title: response.data.message,
+                                icon: "success",
+                                button: "next",
+                            }).then(() => {
+                                window.location.reload()
+                            })
+                        })
+                        .catch((err) => {
+                            swal(err.message)
+                        })
+                },
+
+                logout() {
+
+                    swal({
+                        title: "Are you sure want to logout?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willLogout) => {
+                            if (willLogout) {
+                                localStorage.clear()
+                                window.location.reload()
+                            }
+                        });
+
+                },
+
+                register() {
+                    event.preventDefault()
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:3000/user/register',
+                        data: {
+                            username: this.username,
+                            email: this.email,
+                            password: this.password
+                        }
+                    })
+                        .then((response) => {
+                            if (response.status == 201) {
+                                swal({
+                                    title: "Success",
+                                    text: response.data.message,
+                                    icon: "success",
+                                    buttons: true,
+                                })
+                                    .then(() => {
+                                        window.location.href = "index.html"
+                                    });
+                            } else {
+                                swal(response.data.message)
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            swal(`field is required`)
+                        })
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

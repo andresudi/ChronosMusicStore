@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- swal -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Todoin</title>
+</head>
+
+<body>
+    <div id="app1">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Register</h5>
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <h5>Name:</h5>
+                                    <input v-model="username" type="text" class="form-control inpt" placeholder="name" required>
+                                </div>
+                                <div class="form-label-group">
+                                    <h5>Email:</h5>
+                                    <input v-model="email" type="email" class="form-control inpt" placeholder="email" required>
+                                </div>
+                                <div class="form-label-group">
+                                    <h5>Password:</h5>
+                                    <input v-model="password" type="password" class="form-control inpt" placeholder="password" required>
+                                </div>
+                                <button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="register" type="submit">Sign Up</button>
+                                <hr class="my-4">
+                                <p style="text-align: center">Already Have an Account?
+                                    <a href="./index.html" style="color: brown;">Login here</a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <script>
+    var app = new Vue({
+    el: '#app1',
+    data: {
+        username: '',
+        email: '',
+        password: ''
+    },
+
+    methods: {
+        register(){
+            event.preventDefault()
+            axios({
+                method: 'post',
+                url: 'http://localhost:3000/user/register',
+                data: {
+                    username: this.username,
+                    email: this.email,
+                    password: this.password
+                }
+            })
+            .then((response) => {
+                if (response.status == 201) {
+                    swal({
+                        title: "Success",
+                        text: response.data.message,
+                        icon: "success",
+                        buttons: true,
+                    })
+                    .then(() => {
+                        window.location.href="index.html"
+                    });
+                }else {
+                    swal(response.data.message)
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+                swal(`field is required`)  
+            })
+        },
+
+        login(){
+            event.preventDefault()
+            axios.post('http://localhost:3000/user/login', {
+                email: this.email,
+                password: this.password
+            })
+            .then((response) => {
+                console.log(response)
+                localStorage.setItem('token', response.data.token)
+                swal({
+                    title: response.data.message,
+                    icon: "success",
+                    button: "next",
+                });
+                window.location.href="http://localhost:8080/dashboard.html"
+            })
+            .catch((err) => {
+                swal(err.message)
+            })
+        }
+    }
+})
+    </script>
+</body>
+
+</html>

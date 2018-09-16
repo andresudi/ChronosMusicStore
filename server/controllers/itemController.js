@@ -135,11 +135,35 @@ const merch = (req, res) => {
     });
 };
 
+const buyItem = (req, res) => {
+  Item.findById(req.body.id)
+    .then(result => {
+      if (result) {
+        Item.updateOne(
+          { _id: req.body.id },
+          { $set: { stock: result.stock - 1 } }
+        )
+          .then(() => {
+            res.status(200).json({
+              message: 'success buy item'
+            });
+          })
+          .catch((err) => {
+            console.log('ini err1 ==>',err);
+          });
+      }
+    })
+    .catch(err => {
+      console.log('ini errr2  ===>',err);
+    });
+};
+
 module.exports = {
   getItem,
   addItem,
   updateItem,
   deleteItem,
   cd,
-  merch
+  merch,
+  buyItem
 };

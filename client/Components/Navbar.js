@@ -10,12 +10,7 @@ Vue.component("navbar", {
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#home" @click="showAll">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         Category
@@ -25,16 +20,16 @@ Vue.component("navbar", {
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" @click="shwoMerch" href="#merch">Merchandise</a>
                     </div>
-                </li>
+                </li> -->
             </ul>
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-model="itemToSearch">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="color: white; margin-right: 200px;" @click="getAllCardToShow">Search</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="color: white; margin-right: 230px;" @click="getAllCardToShow">Search</button>
             </form>
             <button v-if="!newTokenGet" class="btn btn-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#registerModal" style="margin-right: 5px;">Register</button>
             <button v-if="!newTokenGet" class="btn btn-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#loginModal" style="margin-right: 5px;">Log in</button>
-            <button v-if="newTokenGet" class="btn btn-outline-light" type="button" data-toggle="modal" data-target="#cart" style="margin-right: 5px;">
-                <i class="fa fa-shopping-cart" style="font-size:16px"></i>
+            <button v-if="newTokenGet" class="btn btn-outline-light" type="button" data-toggle="modal" data-target="#cartModal" style="margin-right: 5px;">
+                Carts {{ resultcartprops.length }}<i class="fa fa-shopping-cart" style="font-size:16px"></i>
              </button>
             <button v-if="newTokenGet" class="btn btn-info my-2 my-sm-0" type="button" @click="logout">Log out</button>
         </div>
@@ -47,10 +42,11 @@ Vue.component("navbar", {
       baseUrl: "http://localhost:3000",
       itemsShow: [],
       itemToSearch: "",
-      newTokenGet: false
+      newTokenGet: false,
+      islogout: false
     };
   },
-  props: ['tokenget', 'propsistoken'],
+  props: ['tokenget', 'propsistoken', 'resultcartprops'],
   methods: {
     showCd() {
       this.changeShowMerch = false;
@@ -69,6 +65,7 @@ Vue.component("navbar", {
         emitChangeShowMerch: this.shwoMerch,
         emitClearSearchItem: this.itemsShow
       });
+      location.reload()
     },
     getAllCardToShow() {
       axios({
@@ -99,8 +96,12 @@ Vue.component("navbar", {
         })
             .then((willLogout) => {
                 if (willLogout) {
+                    if(this.islogout) {
+                        this.islogout = false
+                    } else {
+                        this.islogout = true
+                    }
                    localStorage.clear()
-                   this.newTokenGet = false
                 }
             });
     },
@@ -111,6 +112,12 @@ Vue.component("navbar", {
     },
     propsistoken() {
         this.newTokenGet = true
-    }
-  }
+    },
+    islogout() {
+        this.newTokenGet = false
+        this.$emit('islogout', this.newTokenGet)
+    },
+
+  },
+
 });

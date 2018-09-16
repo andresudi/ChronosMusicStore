@@ -1,6 +1,6 @@
 Vue.component('modal-register', {
     template: `
-        <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -8,10 +8,12 @@ Vue.component('modal-register', {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            <div class="container">
-                <div class="modal-body">
-                    <div class="">
+                <div class="container">
+                    <div class="modal-body">
                         <div class="card card-signin my-5">
+                            <div v-if="notifHide" class="alert alert-warning" role="alert" style="text-align: center;">
+                                {{ this.notif }}
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title text-center">Register</h5>
                                 <form class="form-signin">
@@ -26,7 +28,7 @@ Vue.component('modal-register', {
                                     <div class="form-label-group">
                                         <input v-model="password" type="password" class="form-control" placeholder="Password" required>
                                         <hr>
-                                            <button class="btn btn-lg btn-primary btn-block text-uppercase" @click="login" type="button">Sign Up</button>
+                                            <button class="btn btn-lg btn-primary btn-block text-uppercase" @click="register" type="button">Sign Up</button>
                                     </div>
                                 </form>
                             </div>
@@ -35,7 +37,6 @@ Vue.component('modal-register', {
                 </div>
             </div>
         </div>
-        </div>
     </div>
     `,
     data() {
@@ -43,21 +44,34 @@ Vue.component('modal-register', {
             name: '',
             password: '',
             email: '',
-            baseUrl: 'http://localhost:3000'
+            baseUrl: 'http://localhost:3000',
+            notif: '',
+            notifHide: false,
         }
     },
     methods: {
         register() {
+            let data = {
+                name : this.name,
+                email : this.email,
+                password : this.password
+            }
             axios({
                 method: 'POST',
                 url: this.baseUrl + '/users/register',
                 data
             })
             .then(function(response){
-                location.reload()
+                this.notif = 'Successfully register new user!'
+                swal(this.notif, '', 'success')
+                this.notifHide = true             
             })
             .catch(function(err){
-                console.log(err.response.data.err.errors)
+                this.notif = err.response.data.message
+                this.notifHide = true
+                swal(this.notif, '', 'error')
+                console.log(this.notif);
+                console.log(this.notifHide);
             })
         }
     }

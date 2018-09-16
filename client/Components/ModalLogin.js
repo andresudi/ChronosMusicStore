@@ -45,8 +45,7 @@ Vue.component('modal-login', {
             isLogin: false,
             baseUrl: 'http://localhost:3000',
             notif: '',
-            notifSuccess: false,
-            notifFail: false
+            notifSuccess: false
         }
     },
     methods: {

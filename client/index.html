@@ -24,21 +24,26 @@
 
 <body>
     <div id="app">
-        <navbar @show-cd="getShowCd" @show-merch="getShowMerch" @show-all="getShowAll" @all-items="getItemToSearch" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps"></navbar>
+        <navbar @show-cd="getShowCd" @show-merch="getShowMerch" @show-all="getShowAll" @all-items="getItemToSearch" v-bind:tokenget="tokenData"
+            v-bind:propsistoken="isTokenProps" @islogout="getIslogoutMethod" v-bind:resultcartprops="cart"></navbar>
         <br>
+
         <modal-login @data-token="getToken"></modal-login>
         <modal-register></modal-register>
+        <modal-cart v-bind:cartsfromparent="cart" @sentiditem="getiditemfromcart" :tocartprops="addtocartState"></modal-cart>
         <carousel></carousel>
         <sale-bonus></sale-bonus>
 
-        <item-show :itemshow="ItemToShow" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps"></item-show>
-        <item-cd v-if="showCd" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps"></item-cd>
-        <item-merch v-if="showMerch" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps"></item-merch>
+        <item-show :itemshow="ItemToShow" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps" v-bind:islogoutprops="isLogout"
+            @resultcart="resultClickedCart"></item-show>
+        <item-cd v-if="showCd" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps" v-bind:islogoutprops="isLogout" @resultcart="resultClickedCart" @data-emit-add-to-cart="addToCartEmit"></item-cd>
+        <!-- <item-merch v-if="showMerch" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps" v-bind:islogoutprops="isLogout"
+            @resultcart="resultClickedCart"></item-merch> -->
 
         <carousel-video></carousel-video>
         <footer-cp></footer-cp>
-
     </div>
+    <script src="./Components/ModalCart.js"></script>
     <script src="./Components/ModalRegister.js"></script>
     <script src="./Components/ModalLogin.js"></script>
     <script src="./Components/ItemToShow.js"></script>
@@ -66,7 +71,11 @@
                 ItemToShow: [],
                 tokenData: '',
                 isToken: '',
-                isTokenProps: false
+                isTokenProps: false,
+                isLogout: true,
+                idItem: '',
+                datacart: '',
+                addtocartState: []
             },
             methods: {
                 getShowCd(value) {
@@ -74,11 +83,12 @@
                     this.showMerch = true
                     this.ItemToShow = []
                 },
+
                 getShowMerch(value) {
                     this.showMerch = value
                     this.showCd = true
                     this.ItemToShow = []
-                },  
+                },
 
                 getShowAll() {
                     this.showMerch = true
@@ -96,9 +106,28 @@
                     this.cart.push(item)
                 },
 
-                getToken(value) {   
+                getToken(value) {
                     this.tokenData = value
                 },
+                getIslogoutMethod(value) {
+                    if (this.isLogout) {
+                        this.isLogout = false
+                    } else {
+                        this.isLogout = true
+                    }
+
+                },
+                resultClickedCart(value) {
+                    this.cart = value
+                },
+
+                getiditemfromcart(value) {
+                    this.idItem = value
+                },
+
+                addToCartEmit(item) {
+                    this.addtocartState.push(item)
+                }
             },
             mounted() {
                 this.isToken = localStorage.getItem('token')
@@ -106,6 +135,14 @@
                     this.isTokenProps = true
                 }
             },
+            watch: {
+                isToken() {
+                    this.isToken = localStorage.getItem('token')
+                    if (this.isToken) {
+                        this.isTokenProps = true
+                    }
+                },
+            }
         })
     </script>
 </body>

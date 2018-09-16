@@ -21,11 +21,11 @@ Vue.component("item-cd", {
                         <strong>{{ item.artist }}</strong>
                     </h6>
                     <h6>{{ item.productName }}</h6>
-                    <h6>
-                        <strong>{{ item.type }}</strong>
-                    </h6>
                     <h6>{{ formatMoney(item.price) }}</h6>
-                    <button class="btn btn-success" value="album.id">
+                    <h6>
+                        <i>Stocks: {{ item.stock }} pcs</i>
+                    </h6>
+                    <button v-if="newTokenGet" class="btn btn-success" value="album.id">
                         <i class="fa fa-cart-plus" aria-hidden="true"></i> Add To Cart</button>
                 </div>
             </div>
@@ -36,9 +36,11 @@ Vue.component("item-cd", {
   data() {
     return {
       items: [],
-      baseUrl: "http://localhost:3000"
+      baseUrl: "http://localhost:3000",
+      newTokenGet: false
     };
   },
+  props: ['tokenget', 'propsistoken'],
   created() {
     axios({
       method: "GET",
@@ -55,5 +57,13 @@ Vue.component("item-cd", {
     formatMoney(price) {
       return `Rp. ${price.toLocaleString()},-`;
     }
+  },
+  watch: {
+    tokenget() {
+        this.newTokenGet = true
+    },
+    propsistoken() {
+        this.newTokenGet = true
+    } 
   }
 });

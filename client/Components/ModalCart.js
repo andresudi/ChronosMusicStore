@@ -55,7 +55,6 @@ Vue.component("modal-cart", {
   data() {
     return {
       totalPrice: 0,
-      base_url: "https://chronos.andresudi.club"
     };
   },
   watch: {
@@ -72,26 +71,9 @@ Vue.component("modal-cart", {
     },
 
     buy() {
-      this.cartsfromparent.forEach(cart => {
-        axios({
-          method: "PUT",
-          url: this.base_url + "/items/buy",
-          headers: {
-            token: localStorage.getItem("token")
-          },
-          data: {
-            id: cart._id
-          }
-        })
-          .then(() => {})
-          .catch(err => {
-            console.log(err);
-          });
-      });
-
       axios({
         method: "POST",
-        url: this.base_url + "/carts",
+        url: baseUrl + "/carts",
         headers: {
           token: localStorage.getItem("token")
         },
@@ -101,10 +83,7 @@ Vue.component("modal-cart", {
         }
       })
         .then(result => {
-          console.log(result);
-          console.log("iniiiii", result.data.data._id);
-          swal("Thank you!", "hope you buy again!", "success");
-          console.log(result.data.data.listItem);
+          swal("Thank you!", "Please check you email to get your data transaction!", "success");
           this.cartsfromparent = [];
           this.$emit("nolincart", this.cartsfromparent);
         })

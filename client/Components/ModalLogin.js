@@ -43,7 +43,6 @@ Vue.component('modal-login', {
             email : '',
             password : '',
             isLogin: false,
-            baseUrl: 'https://chronos.andresudi.club',
             notif: '',
             notifSuccess: false
         }
@@ -52,7 +51,7 @@ Vue.component('modal-login', {
         login() {
             axios({
                 method: 'POST',
-                url: this.baseUrl + '/users/login',
+                url: baseUrl + '/users/login',
                 data: {
                     email : this.email,
                     password : this.password

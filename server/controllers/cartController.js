@@ -23,9 +23,6 @@ const createCart = (req, res) => {
               .populate("listItem")
               .then(resultOne => {
                 resultOne.listItem.forEach(element => {
-                  console.log(element.productName);
-                  console.log("masuk kirim email");
-
                   var transporter = nodemailer.createTransport({
                     service: "gmail",
                     host: "smtp.gmail.com",

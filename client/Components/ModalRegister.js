@@ -44,7 +44,6 @@ Vue.component('modal-register', {
             name: '',
             password: '',
             email: '',
-            baseUrl: 'https://chronos.andresudi.club',
             notif: '',
             notifHide: false,
         }
@@ -58,7 +57,7 @@ Vue.component('modal-register', {
             }
             axios({
                 method: 'POST',
-                url: this.baseUrl + '/users/register',
+                url: baseUrl + '/users/register',
                 data
             })
             .then(function(response){

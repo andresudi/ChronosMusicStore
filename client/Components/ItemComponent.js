@@ -39,7 +39,6 @@ Vue.component("item-cd", {
   data() {
     return {
       items: [],
-      baseUrl: "https://chronos.andresudi.club",
       newTokenGet: false,
       carts: []
     };
@@ -63,7 +62,7 @@ Vue.component("item-cd", {
     getDataCd() {
       axios({
         method: "GET",
-        url: this.baseUrl + "/items"
+        url: baseUrl + "/items"
       })
         .then(result => {
           this.items = result.data.data;

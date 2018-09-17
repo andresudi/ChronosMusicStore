@@ -4,6 +4,8 @@ const Cart = require('../models/cart');
 
 const isLogin = (req, res, next) => {
     var token = req.headers.token
+    console.log('masuk login');
+    
      if (token) {
         var decode = jwt.verify(token, process.env.jwt_secret)
         User.findOne({
@@ -12,6 +14,8 @@ const isLogin = (req, res, next) => {
         .then((data) => {
             if (data) {
                 req.loggedInUser = data
+                console.log(data);
+                
                 next()
             } else {
                 res.status(400).json({

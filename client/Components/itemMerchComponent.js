@@ -38,7 +38,6 @@ Vue.component("item-merch", {
   data() {
     return {
       items: [],
-      baseUrl: "https://chronos.andresudi.club",
       newTokenGet: false,
       carts: []
     };
@@ -51,7 +50,7 @@ Vue.component("item-merch", {
     getDataMerch() {
       axios({
         method: "GET",
-        url: this.baseUrl + "/items/merch"
+        url: baseUrl + "/items/merch"
       })
         .then(result => {
           this.items = result.data;

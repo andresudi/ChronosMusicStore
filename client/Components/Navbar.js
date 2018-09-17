@@ -39,7 +39,6 @@ Vue.component("navbar", {
     return {
       changeShowCd: false,
       changeShowMerch: false,
-      baseUrl: "https://chronos.andresudi.club",
       itemsShow: [],
       itemToSearch: "",
       newTokenGet: false,
@@ -70,7 +69,7 @@ Vue.component("navbar", {
     getAllCardToShow() {
       axios({
         method: "GET",
-        url: this.baseUrl + "/items"
+        url: baseUrl + "/items"
       })
         .then(result => {
           this.itemsShow = [];

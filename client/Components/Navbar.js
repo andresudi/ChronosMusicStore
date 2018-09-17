@@ -70,7 +70,7 @@ Vue.component("navbar", {
     getAllCardToShow() {
       axios({
         method: "GET",
-        url: this.baseUrl + "/items/"
+        url: this.baseUrl + "/items"
       })
         .then(result => {
           this.itemsShow = [];
@@ -80,6 +80,9 @@ Vue.component("navbar", {
               this.itemsShow.push(element);
             }
           });
+
+          console.log(this.itemsShow);
+          
           this.$emit("all-items", this.itemsShow);
         })
         .catch(err => {

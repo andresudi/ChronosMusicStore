@@ -44,7 +44,7 @@ Vue.component("item-cd", {
       carts: []
     };
   },
-  props: ["tokenget", "propsistoken", "islogoutprops"],
+  props: ["tokenget", "propsistoken", "islogoutprops", "nolincart"],
   created() {
     this.getDataCd();
   },
@@ -76,7 +76,6 @@ Vue.component("item-cd", {
     addToCart(item) {
       this.totalPrice = 0;
       this.carts.push(item);
-      console.log('iniiii push di cartsssss', item);
       this.carts.forEach((cart, index) => {
         if (index == this.carts.length - 1) {
           cart.stock -= 1;
@@ -100,6 +99,9 @@ Vue.component("item-cd", {
     },
     carts() {
       this.$emit('resultcart', this.carts)
+    },
+    nolincart() {
+      this.carts = []
     }
   }
 });

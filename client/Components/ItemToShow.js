@@ -24,7 +24,7 @@ Vue.component("item-show", {
             </div>
         </div>
     </div>`,
-  props: ["itemshow", "tokenget", "propsistoken", "islogoutprops"],
+  props: ["itemshow", "tokenget", "propsistoken", "islogoutprops", "nolincart"],
   data() {
     return {
       newTokenGet: false,
@@ -77,6 +77,9 @@ Vue.component("item-show", {
     },
     carts() {
       this.$emit('resultcart', this.carts)
+    },
+    nolincart() {
+      this.carts = []
     }
   }
 });

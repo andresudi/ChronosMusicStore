@@ -72,6 +72,23 @@ Vue.component("modal-cart", {
     },
 
     buy() {
+      this.cartsfromparent.forEach(cart => {
+        axios({
+          method: "PUT",
+          url: this.base_url + "/items/buy",
+          headers: {
+            token: localStorage.getItem("token")
+          },
+          data: {
+            id: cart._id
+          }
+        })
+          .then(() => {})
+          .catch(err => {
+            console.log(err);
+          });
+      });
+
       axios({
         method: "POST",
         url: this.base_url + "/carts",
@@ -85,52 +102,11 @@ Vue.component("modal-cart", {
       })
         .then(result => {
           console.log(result);
-
           console.log("iniiiii", result.data.data._id);
-          // swal("Thank you!", "hope you buy again!", "success");
-          swal({
-            title: "Are you sure want to buy these items?",
-            buttons: true,
-        })
-            .then((willLogout) => {
-                if (willLogout) {
-                   location.reload()
-                }
-            });
-          this.cartsfromparent = [];
-
+          swal("Thank you!", "hope you buy again!", "success");
           console.log(result.data.data.listItem);
-          // axios({
-          //   method: "GET",
-          //   url: `${this.base_url}/items/buy`
-          // })
-          //   .then(result => {
-          //     console.log("masuk");
-
-          //     console.log(result.data.data);
-          //   })
-          //   .catch(err => {
-          //     console.log(err);
-          //   });
-
-          // this.result.data.data.forEach(cart => {
-          //   axios({
-          //     method: "PUT",
-          //     url: this.base_url + "/items/buy",
-          //     headers: {
-          //       token: localStorage.getItem("token")
-          //     },
-          //     data: {
-          //       id: cart._id
-          //     }
-          //   })
-          //     .then(result => {
-          //       console.log(result);
-          //     })
-          //     .catch(err => {
-          //       console.log(err);
-          //     });
-          // });
+          this.cartsfromparent = [];
+          this.$emit("nolincart", this.cartsfromparent);
         })
         .catch(err => {
           console.log(err);

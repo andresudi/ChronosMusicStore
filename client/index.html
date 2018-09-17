@@ -19,6 +19,7 @@
             background-color: black;
         }
     </style>
+    <link rel="shortcut icon" href="https://orig00.deviantart.net/9b77/f/2014/296/e/e/band_logo___college_prep_work_by_smugsyquinn-d83vfed.png" type="image/x-icon"/>
     <title>Chronos</title>
 </head>
 
@@ -30,13 +31,13 @@
 
         <modal-login @data-token="getToken"></modal-login>
         <modal-register></modal-register>
-        <modal-cart v-bind:cartsfromparent="cart" @sentiditem="getiditemfromcart" :tocartprops="addtocartState"></modal-cart>
+        <modal-cart v-bind:cartsfromparent="cart" @sentiditem="getiditemfromcart" :tocartprops="addtocartState" @nolincart="nolincart"></modal-cart>
         <carousel></carousel>
         <sale-bonus></sale-bonus>
 
         <item-show :itemshow="ItemToShow" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps" v-bind:islogoutprops="isLogout"
-            @resultcart="resultClickedCart"></item-show>
-        <item-cd v-if="showCd" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps" v-bind:islogoutprops="isLogout" @resultcart="resultClickedCart" @data-emit-add-to-cart="addToCartEmit"></item-cd>
+            @resultcart="resultClickedCart" :nolincart="statusNullCart"></item-show>
+        <item-cd v-if="showCd" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps" v-bind:islogoutprops="isLogout" @resultcart="resultClickedCart" @data-emit-add-to-cart="addToCartEmit" :nolincart="statusNullCart"></item-cd>
         <!-- <item-merch v-if="showMerch" v-bind:tokenget="tokenData" v-bind:propsistoken="isTokenProps" v-bind:islogoutprops="isLogout"
             @resultcart="resultClickedCart"></item-merch> -->
 
@@ -75,9 +76,20 @@
                 isLogout: true,
                 idItem: '',
                 datacart: '',
-                addtocartState: []
+                addtocartState: [],
+                statusNullCart: false
             },
             methods: {
+                nolincart(value) {   
+                  this.cart = value
+
+                    if(this.statusNullCart) {
+                        this.statusNullCart = false
+                    } else {
+                        this.statusNullCart = true
+                    }
+                },
+
                 getShowCd(value) {
                     this.showCd = value
                     this.showMerch = true

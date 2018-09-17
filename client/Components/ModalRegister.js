@@ -44,7 +44,7 @@ Vue.component('modal-register', {
             name: '',
             password: '',
             email: '',
-            baseUrl: 'http://localhost:3000',
+            baseUrl: 'https://chronos.andresudi.club',
             notif: '',
             notifHide: false,
         }

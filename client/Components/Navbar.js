@@ -39,7 +39,7 @@ Vue.component("navbar", {
     return {
       changeShowCd: false,
       changeShowMerch: false,
-      baseUrl: "http://localhost:3000",
+      baseUrl: "https://chronos.andresudi.club",
       itemsShow: [],
       itemToSearch: "",
       newTokenGet: false,

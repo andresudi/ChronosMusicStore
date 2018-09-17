@@ -55,7 +55,7 @@ Vue.component("modal-cart", {
   data() {
     return {
       totalPrice: 0,
-      base_url: "http://localhost:3000"
+      base_url: "https://chronos.andresudi.club"
     };
   },
   watch: {

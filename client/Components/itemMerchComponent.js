@@ -38,7 +38,7 @@ Vue.component("item-merch", {
   data() {
     return {
       items: [],
-      baseUrl: "http://localhost:3000",
+      baseUrl: "https://chronos.andresudi.club",
       newTokenGet: false,
       carts: []
     };

@@ -43,7 +43,7 @@ Vue.component('modal-login', {
             email : '',
             password : '',
             isLogin: false,
-            baseUrl: 'http://localhost:3000',
+            baseUrl: 'https://chronos.andresudi.club',
             notif: '',
             notifSuccess: false
         }

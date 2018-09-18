@@ -31,4 +31,4 @@ portofolio e-commerce with vue directive/component
 
 ## Demo 
 
-https://chronos-store.andresudi.club/
+https://chronos-music.andresudi.club/?#home

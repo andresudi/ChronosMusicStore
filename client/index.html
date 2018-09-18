@@ -27,7 +27,7 @@
     <div id="app">
         <navbar @show-cd="getShowCd" @show-merch="getShowMerch" @show-all="getShowAll" @all-items="getItemToSearch" v-bind:tokenget="tokenData"
             v-bind:propsistoken="isTokenProps" @islogout="getIslogoutMethod" v-bind:resultcartprops="cart"></navbar>
-        <br>
+        <br>    
 
         <modal-login @data-token="getToken"></modal-login>
         <modal-register></modal-register>

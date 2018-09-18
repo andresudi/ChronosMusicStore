@@ -24,7 +24,7 @@ Vue.component("navbar", {
             </ul>
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-model="itemToSearch">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="color: white; margin-right: 230px;" @click="getAllCardToShow">Search</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="color: white; margin-right: 230px;" href="#home" @click="getAllCardToShow">Search</button>
             </form>
             <button v-if="!newTokenGet" class="btn btn-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#registerModal" style="margin-right: 5px;">Register</button>
             <button v-if="!newTokenGet" class="btn btn-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#loginModal" style="margin-right: 5px;">Log in</button>
@@ -64,7 +64,6 @@ Vue.component("navbar", {
         emitChangeShowMerch: this.shwoMerch,
         emitClearSearchItem: this.itemsShow
       });
-      location.reload()
     },
     getAllCardToShow() {
       axios({
@@ -79,9 +78,7 @@ Vue.component("navbar", {
               this.itemsShow.push(element);
             }
           });
-
           console.log(this.itemsShow);
-          
           this.$emit("all-items", this.itemsShow);
         })
         .catch(err => {
@@ -104,6 +101,7 @@ Vue.component("navbar", {
                         this.islogout = true
                     }
                    localStorage.clear()
+                   this.showAll()
                 }
             });
     },
@@ -119,7 +117,9 @@ Vue.component("navbar", {
         this.newTokenGet = false
         this.$emit('islogout', this.newTokenGet)
     },
-
+    itemsShow() {
+        this.itemsShow.length > 0
+    }
   },
 
 });

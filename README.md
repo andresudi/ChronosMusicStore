@@ -27,7 +27,7 @@ portofolio e-commerce with vue directive/component
 | Route   | Method | Description                                                 | Attributes                            |
 | ------- | ------ | ----------------------------------------------------------- | ------------------------------------- |
 | /carts  | GET    | Get all transaction data                                    |                                       |
-| /carts/ | POST   | create new transaction (need login first to do this action) | userId, listItem(id item), totalPrice |
+| /carts | POST   | create new transaction (need login first to do this action) | userId, listItem(id item), totalPrice |
 
 ## Demo 
 
